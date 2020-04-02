@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
   </PropertyGroup>
 
 </Project>
