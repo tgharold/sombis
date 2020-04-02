@@ -1,6 +1,8 @@
 # https://github.com/actions/upload-release-asset
 # https://github.com/montudor/action-zip
 
+# Creates multiple binaries for a console application
+
 on:
   push:
     # Sequence of patterns matched against refs/tags
@@ -12,7 +14,7 @@ name: Create Release on Git Tag
 env:
   PROJECT: sombis
   CONFIG: Release
-  TARGET: netstandard2.0
+  TARGET: netcoreapp3.1
 
 jobs:
   build:
@@ -46,29 +48,25 @@ jobs:
 
       - name: dotnet test
         run: dotnet test --configuration ${{ env.CONFIG }}
+        
+      # https://docs.microsoft.com/en-us/dotnet/core/deploying/
 
-      - name: dotnet publish
+      - name: dotnet publish osx-x64
         working-directory: ./src/${{ env.PROJECT }}
         run: >
-          dotnet publish --configuration ${{ env.CONFIG }} 
+          dotnet publish 
+          -r osx-x64
+          --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
 
-      - name: Create Zip File
+      - name: Create Zip File osx-x64
         uses: montudor/action-zip@v0.1.0
         with:
           args: >
-            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}.zip
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
             ./LICENSE ./README.md
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/${{ env.PROJECT }}.pdb
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/${{ env.PROJECT }}.dll
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/${{ env.PROJECT }}.xml
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/osx-x64/${{ env.PROJECT }}
           
-      - name: dotnet pack
-        working-directory: ./src/${{ env.PROJECT }}
-        run: >
-          dotnet pack --configuration ${{ env.CONFIG }} 
-          /p:Version="${{ env.RELEASE_VERSION }}"
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
