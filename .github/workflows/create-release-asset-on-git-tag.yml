@@ -1,0 +1,95 @@
+# https://github.com/actions/upload-release-asset
+# https://github.com/montudor/action-zip
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release on Git Tag
+
+env:
+  PROJECT: sombis
+  CONFIG: Release
+  TARGET: netstandard2.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      # https://stackoverflow.com/a/58178121
+      # https://stackoverflow.com/a/59284102
+      - name: Get Release Version
+        run: |
+          echo ::set-env name=RELEASE_TAG::${GITHUB_REF##*/}
+          echo ::set-env name=RELEASE_VERSION::${GITHUB_REF##*/v}          
+
+      - name: Print Release Version
+        run: |
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "RELEASE_TAG=$RELEASE_TAG env.RELEASE_TAG=${{ env.RELEASE_TAG }}"
+          echo "RELEASE_VERSION=$RELEASE_VERSION env.RELEASE_VERSION=${{ env.RELEASE_VERSION }}"
+        
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.101
+
+      - name: dotnet build
+        run: dotnet build --configuration ${{ env.CONFIG }}
+
+      - name: dotnet test
+        run: dotnet test --configuration ${{ env.CONFIG }}
+
+      - name: dotnet publish
+        working-directory: ./src/${{ env.PROJECT }}
+        run: >
+          dotnet publish --configuration ${{ env.CONFIG }} 
+          /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
+
+      - name: Create Zip File
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: >
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}.zip
+            ./LICENSE ./README.md
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/${{ env.PROJECT }}.pdb
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/${{ env.PROJECT }}.dll
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/${{ env.PROJECT }}.xml
+          
+      - name: dotnet pack
+        working-directory: ./src/${{ env.PROJECT }}
+        run: >
+          dotnet pack --configuration ${{ env.CONFIG }} 
+          /p:Version="${{ env.RELEASE_VERSION }}"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true
+      
+      # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, 
+      # which include a `upload_url`. See this blog post for more info: 
+      # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+      - name: Attach Zip File to Release
+        id: upload-release-asset-zip 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}.zip
+          asset_content_type: application/zip
