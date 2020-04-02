@@ -65,7 +65,7 @@ jobs:
           args: >
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
             ./LICENSE ./README.md
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/publish/osx-x64/${{ env.PROJECT }}
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
           
       - name: Create Release
         id: create_release
