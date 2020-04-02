@@ -49,8 +49,27 @@ jobs:
       - name: dotnet test
         run: dotnet test --configuration ${{ env.CONFIG }}
         
+      # ---------------------------------------------------------
       # https://docs.microsoft.com/en-us/dotnet/core/deploying/
 
+      # ----- linux-x64
+      - name: dotnet publish linux-x64
+        working-directory: ./src/${{ env.PROJECT }}
+        run: >
+          dotnet publish 
+          -r linux-x64
+          --configuration ${{ env.CONFIG }} 
+          /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
+
+      - name: Create ZIP linux-x64
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: >
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
+            ./LICENSE ./README.md
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}
+          
+      # ----- osx-x64
       - name: dotnet publish osx-x64
         working-directory: ./src/${{ env.PROJECT }}
         run: >
@@ -59,13 +78,32 @@ jobs:
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
 
-      - name: Create Zip File osx-x64
+      - name: Create ZIP osx-x64
         uses: montudor/action-zip@v0.1.0
         with:
           args: >
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
+          
+      # ----- win-x64
+      - name: dotnet publish win-x64
+        working-directory: ./src/${{ env.PROJECT }}
+        run: >
+          dotnet publish 
+          -r win-x64
+          --configuration ${{ env.CONFIG }} 
+          /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
+
+      - name: Create ZIP win-x64
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: >
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
+            ./LICENSE ./README.md
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
+          
+      # ------------------------
           
       - name: Create Release
         id: create_release
@@ -81,13 +119,36 @@ jobs:
       # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, 
       # which include a `upload_url`. See this blog post for more info: 
       # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-      - name: Attach Zip File to Release
-        id: upload-release-asset-zip 
+      
+      - name: Release ZIP linux-x64
+        id: upload-release-asset-zip-linux-x64
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}.zip
-          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}.zip
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
           asset_content_type: application/zip
+          
+      - name: Release ZIP osx-x64
+        id: upload-release-asset-zip-osx-x64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
+          asset_content_type: application/zip
+          
+      - name: Release ZIP win-x64
+        id: upload-release-asset-zip-win-x64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
+          asset_content_type: application/zip          
