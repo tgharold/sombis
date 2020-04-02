@@ -1,3 +1,4 @@
+using sombis.Core;
 using Xunit;
 
 namespace sombis.Tests

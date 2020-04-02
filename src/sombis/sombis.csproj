@@ -8,5 +8,9 @@
   <ItemGroup>
     <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\sombis.Core\sombis.Core.csproj" />
+  </ItemGroup>
 
 </Project>

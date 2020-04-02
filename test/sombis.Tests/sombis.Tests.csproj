@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\sombis\sombis.csproj" />
+    <ProjectReference Include="..\..\src\sombis.Core\sombis.Core.csproj" />
   </ItemGroup>
 
 </Project>

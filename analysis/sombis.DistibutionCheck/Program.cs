@@ -1,4 +1,5 @@
 ﻿using System;
+using sombis.Core;
 
 namespace sombis.DistibutionCheck
 {
@@ -6,6 +7,8 @@ namespace sombis.DistibutionCheck
     {
         static void Main(string[] args)
         {
+            var generator = new Generator();
+            
             Console.WriteLine("Hello World!");
         }
     }
