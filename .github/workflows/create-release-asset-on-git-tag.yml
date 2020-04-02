@@ -57,7 +57,7 @@ jobs:
         working-directory: ./src/${{ env.PROJECT }}
         run: >
           dotnet publish 
-          --self-contained true
+          --self-contained false
           -r linux-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -69,13 +69,14 @@ jobs:
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.dll
           
       # ----- osx-x64
       - name: dotnet publish osx-x64
         working-directory: ./src/${{ env.PROJECT }}
         run: >
           dotnet publish 
-          --self-contained true
+          --self-contained false
           -r osx-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -87,13 +88,14 @@ jobs:
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.dll
           
       # ----- win-x64
       - name: dotnet publish win-x64
         working-directory: ./src/${{ env.PROJECT }}
         run: >
           dotnet publish 
-          --self-contained true
+          --self-contained false
           -r win-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -105,6 +107,7 @@ jobs:
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.dll
           
       # ------------------------
           
