@@ -6,6 +6,8 @@ namespace sombis
 {
     public class Generator
     {
+        public const int MBILength = 11;
+
         private static readonly Random _random = new Random();
         
         public Generator()

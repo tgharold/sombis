@@ -7,16 +7,20 @@ namespace sombis
         static void Main(string[] args)
         {
             var generator = new Generator();
+
+            var consoleWidth = Console.WindowWidth;
+            var consoleHeight = Console.WindowHeight;
+            var perLineLimit = Math.Floor(((double)consoleWidth) / (Generator.MBILength + 1));
             
-            const int iterations = 10;
-
-            for (var i = 1; i <= iterations; i++)
+            for (var row = 1; row <= consoleHeight - 1; row++)
             {
-                var mbi = generator.CreateRandomMbi();
-                
-                Console.WriteLine(mbi);
-            }            
+                for (var col = 1; col <= perLineLimit; col++)
+                {
+                    var mbi = generator.CreateRandomMbi();  
+                    Console.Write($"{mbi} ");
+                }
+                Console.WriteLine();
+            }
         }
-
     }
 }
