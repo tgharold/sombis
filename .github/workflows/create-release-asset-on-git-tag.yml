@@ -70,6 +70,8 @@ jobs:
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.dll
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.deps.json
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ----- osx-x64
       - name: dotnet publish osx-x64
@@ -89,6 +91,8 @@ jobs:
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.dll
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.deps.json
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ----- win-x64
       - name: dotnet publish win-x64
@@ -108,6 +112,8 @@ jobs:
             ./LICENSE ./README.md
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
             ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.dll
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.deps.json
+            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ------------------------
           
