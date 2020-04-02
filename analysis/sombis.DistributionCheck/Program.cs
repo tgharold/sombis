@@ -1,7 +1,7 @@
 ﻿using System;
 using sombis.Core;
 
-namespace sombis.DistibutionCheck
+namespace sombis.DistributionCheck
 {
     class Program
     {

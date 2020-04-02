@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sombis.Tests", "test\sombis
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "analysis", "analysis", "{4B58503E-258E-4117-8153-4C347510FAD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sombis.DistibutionCheck", "analysis\sombis.DistibutionCheck\sombis.DistibutionCheck.csproj", "{D0ABEE37-9859-40B4-8D00-0790D9B25D17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sombis.DistributionCheck", "analysis\sombis.DistributionCheck\sombis.DistributionCheck.csproj", "{D0ABEE37-9859-40B4-8D00-0790D9B25D17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sombis.Core", "src\sombis.Core\sombis.Core.csproj", "{2C45F15D-549C-423E-B67C-86BA61C1E596}"
 EndProject
