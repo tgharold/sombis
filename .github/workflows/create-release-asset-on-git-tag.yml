@@ -57,6 +57,7 @@ jobs:
         working-directory: ./src/${{ env.PROJECT }}
         run: >
           dotnet publish 
+          --self-contained true
           -r linux-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -74,6 +75,7 @@ jobs:
         working-directory: ./src/${{ env.PROJECT }}
         run: >
           dotnet publish 
+          --self-contained true
           -r osx-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -91,6 +93,7 @@ jobs:
         working-directory: ./src/${{ env.PROJECT }}
         run: >
           dotnet publish 
+          --self-contained true
           -r win-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
