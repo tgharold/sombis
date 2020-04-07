@@ -45,16 +45,18 @@ jobs:
 
       - name: dotnet build
         run: dotnet build --configuration ${{ env.CONFIG }}
+        working-directory: ./dotnet
 
       - name: dotnet test
         run: dotnet test --configuration ${{ env.CONFIG }}
+        working-directory: ./dotnet
         
       # ---------------------------------------------------------
       # https://docs.microsoft.com/en-us/dotnet/core/deploying/
 
       # ----- linux-x64
       - name: dotnet publish linux-x64
-        working-directory: ./src/${{ env.PROJECT }}
+        working-directory: ./dotnet/src/${{ env.PROJECT }}
         run: >
           dotnet publish 
           --self-contained false
@@ -66,16 +68,16 @@ jobs:
         uses: montudor/action-zip@v0.1.0
         with:
           args: >
-            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-linux-x64.zip
             ./LICENSE ./README.md
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.dll
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.deps.json
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.dll
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.deps.json
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ----- osx-x64
       - name: dotnet publish osx-x64
-        working-directory: ./src/${{ env.PROJECT }}
+        working-directory: ./dotnet/src/${{ env.PROJECT }}
         run: >
           dotnet publish 
           --self-contained false
@@ -87,16 +89,16 @@ jobs:
         uses: montudor/action-zip@v0.1.0
         with:
           args: >
-            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-osx-x64.zip
             ./LICENSE ./README.md
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.dll
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.deps.json
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.dll
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.deps.json
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ----- win-x64
       - name: dotnet publish win-x64
-        working-directory: ./src/${{ env.PROJECT }}
+        working-directory: ./dotnet/src/${{ env.PROJECT }}
         run: >
           dotnet publish 
           --self-contained false
@@ -108,12 +110,12 @@ jobs:
         uses: montudor/action-zip@v0.1.0
         with:
           args: >
-            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-win-x64.zip
             ./LICENSE ./README.md
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.dll
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.deps.json
-            ./src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.dll
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.deps.json
+            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ------------------------
           
@@ -139,8 +141,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
-          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-linux-x64.zip
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-linux-x64.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-linux-x64.zip
           asset_content_type: application/zip
           
       - name: Release ZIP osx-x64
@@ -150,8 +152,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
-          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-osx-x64.zip
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-osx-x64.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-osx-x64.zip
           asset_content_type: application/zip
           
       - name: Release ZIP win-x64
@@ -161,6 +163,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
-          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-win-x64.zip
+          asset_path: ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-win-x64.zip
+          asset_name: ${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-win-x64.zip
           asset_content_type: application/zip          
