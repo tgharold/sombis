@@ -60,6 +60,7 @@ jobs:
         run: >
           dotnet publish 
           --self-contained false
+          -p:PublishSingleFile=true
           -r linux-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -71,9 +72,6 @@ jobs:
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-linux-x64.zip
             ./LICENSE ./README.md
             ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.dll
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.deps.json
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/linux-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ----- osx-x64
       - name: dotnet publish osx-x64
@@ -81,6 +79,7 @@ jobs:
         run: >
           dotnet publish 
           --self-contained false
+          -p:PublishSingleFile=true
           -r osx-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -92,9 +91,6 @@ jobs:
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-osx-x64.zip
             ./LICENSE ./README.md
             ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.dll
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.deps.json
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/osx-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ----- win-x64
       - name: dotnet publish win-x64
@@ -102,6 +98,7 @@ jobs:
         run: >
           dotnet publish 
           --self-contained false
+          -p:PublishSingleFile=true
           -r win-x64
           --configuration ${{ env.CONFIG }} 
           /p:Version="${{ env.RELEASE_VERSION }}" /p:InformationalVersion="${{ env.RELEASE_VERSION }}"
@@ -113,9 +110,6 @@ jobs:
             zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-dotnet-win-x64.zip
             ./LICENSE ./README.md
             ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.dll
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.deps.json
-            ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.runtimeconfig.json
           
       # ------------------------
           
