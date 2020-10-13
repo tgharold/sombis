@@ -111,6 +111,15 @@ jobs:
             ./LICENSE ./README.md
             ./dotnet/src/${{ env.PROJECT }}/bin/${{ env.CONFIG }}/${{ env.TARGET }}/win-x64/publish/${{ env.PROJECT }}.exe
           
+      # ----- bash
+      - name: Create ZIP bash
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: >
+            zip --junk-paths ./${{ env.PROJECT }}-${{ env.RELEASE_TAG }}-bash.zip
+            ./LICENSE ./README.md
+            ./bash/sombis.sh
+          
       # ------------------------
           
       - name: Create Release
